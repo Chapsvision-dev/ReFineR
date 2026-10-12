@@ -4,9 +4,7 @@ debug.dot
 assets
 weights
 !docker/*
-third_party
 !cpp/potree_plugin/src/libs
-!requirements.txt
 
 
 best off
@@ -167,3 +165,5 @@ cython_debug/
 !.gitignore
 
 *node_modules*
+
+!requirements.txt

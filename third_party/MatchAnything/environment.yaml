@@ -1,0 +1,14 @@
+name: env
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8
+  - pytorch-cuda=11.7
+  - pytorch=1.12.1
+  - torchvision=0.13.1
+  - pip
+  - pip:
+    - -r requirements.txt

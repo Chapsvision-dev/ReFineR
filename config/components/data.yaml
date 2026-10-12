@@ -17,5 +17,5 @@ data:
   pert_init: null
   cam_precomp: False
   seed: 92 # Tweak
-matchAnything_init: False
+matchAnything_init: True
 matchAnything_init_gs: True
