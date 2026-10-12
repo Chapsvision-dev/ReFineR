@@ -43,10 +43,10 @@ pip install -e . --no-build-isolation
 
 ### 2. Install GSSLAM renderer In MonoGS folder
 ```
-pip install third_party/FORK_MonoGS/submodules/simple-knn --no-build-isolation
+pip install third_party/MonoGS/simple-knn --no-build-isolation
 ```
 ```
-pip install third_party/FORK_MonoGS/submodules/diff-gaussian-rasterization --no-build-isolation
+pip install third_party/MonoGS/diff-gaussian-rasterization --no-build-isolation
 ```
 if you have issues try in both submodules folders:
 ```

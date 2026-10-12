@@ -94,7 +94,7 @@ class RendererGS(Renderer):
             )
         features = self.prepare_features(gaussians)
 
-        rendered_image, radii, depth, opacity, n_touched, sum_T = rasterizer(
+        rendered_image, radii, depth, opacity, n_touched = rasterizer(
             means3D=means3D[mask],
             means2D=screenspace_points[mask],
             shs=None,
@@ -113,8 +113,7 @@ class RendererGS(Renderer):
             "radii": radii,
             "depth": depth[0],
             "opacity": opacity[0],
-            "n_touched": n_touched,
-            "sum_T": sum_T,
+            "n_touched": n_touched
         }
 
         return self.post_process(render_pkg, camera)
