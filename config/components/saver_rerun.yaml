@@ -1,0 +1,14 @@
+saver_rerun: 
+  path: ${out_path}
+  pc_channel: ${viz_chan:${renderer.render_channels}}
+  spawn: True
+  modules: 
+    - imgs
+    - cams
+    - pc
+    - fused
+    - fused_iter
+    - match_pairs
+    - imgs_init
+    - dist_mask
+  

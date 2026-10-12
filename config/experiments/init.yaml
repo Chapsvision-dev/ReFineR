@@ -1,0 +1,11 @@
+
+
+data:
+  pert_init: # Tweak
+    p: 10
+
+matchAnything_init: False
+
+optim: 
+  niter: [2e-5, 0, 0]
+  

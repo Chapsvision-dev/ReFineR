@@ -1,0 +1,7 @@
+data:
+  pert_init: # Tweak
+    p: 10
+    r: 0.
+    t: 0.
+    f: 0
+    c: 0

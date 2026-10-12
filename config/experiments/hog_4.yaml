@@ -1,0 +1,15 @@
+loss: # Tweak
+  hogs:
+    channels: 
+      - comp: [nx, g]
+        weight: 1
+      - comp: [ny, g]
+        weight: 1
+      - comp: [nz, g]
+        weight: 1
+
+    weight: 1
+    layers:
+      - nbins: 12
+        cell_size: 4
+        cells_per_block: 4

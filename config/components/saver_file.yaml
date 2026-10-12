@@ -1,0 +1,16 @@
+saver_file: 
+  path: ${out_path}
+  pc_channel: ${viz_chan:${renderer.render_channels}}
+  modules: 
+  # Available modules: imgs, cams, pc, fused, graphs, csvs, fused_iter
+    # - imgs
+    # - cams
+    # - fused
+    # - graphs
+    # - csvs
+    # - fused_iter
+    - imgs_init
+    # - video
+
+
+  

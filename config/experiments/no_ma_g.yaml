@@ -1,0 +1,7 @@
+matchAnything_init: False
+loss: # Tweak
+  grad:
+    channels: 
+      - comp: [g, g]
+        weight: 1
+    weight: 1

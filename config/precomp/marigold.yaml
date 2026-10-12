@@ -1,0 +1,14 @@
+pc_channels: []
+pc_subsample_factor: 1
+pc_dynamic_scale: False
+pc_view_filter: [-1, 1, 100]
+pc_normalize_intensity: False
+
+img_channels: [red, green, blue] # Tweak
+img_min_size: 1024 
+
+equalize_intensity: False # Tweak
+absolute_normals: False 
+pert_init: null
+seed: 0
+

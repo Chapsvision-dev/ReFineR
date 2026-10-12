@@ -1,0 +1,9 @@
+loss: # Tweak
+  photo:
+    channels: 
+      - comp: [g, g]
+        weight: 1
+    weight: 1
+  grad: null
+
+matchAnything_init: True

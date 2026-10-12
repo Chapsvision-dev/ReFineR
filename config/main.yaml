@@ -1,0 +1,24 @@
+
+include: 
+  - camera
+  - data
+  - data_pert_15
+  # - data_subs_04
+  - gs
+  # - point_size_02
+  - logger
+  # - loss_normals
+  # - loss_reflectivity
+  # - loss_gray
+  # - loss_ma
+  # - loss_photo
+  # - loss_gomhog
+  - loss_gom
+  # - loss_hog
+  - optim_dynamic
+  # - optim_fixed
+  - saver_file
+  - saver_rerun
+  # - saver_rerun_zdown # For Carla
+
+

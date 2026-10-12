@@ -1,0 +1,7 @@
+loss: # Tweak
+  photo:
+    channels: 
+      - comp: [r, g]
+        weight: 1
+    weight: 1
+  grad: null

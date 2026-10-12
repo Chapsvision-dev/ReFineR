@@ -1,0 +1,7 @@
+loss: # Tweak
+  grad:
+    channels: 
+      - comp: [dn, g]
+        weight: 1
+
+    weight: 1

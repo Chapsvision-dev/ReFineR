@@ -1,0 +1,11 @@
+loss: # Tweak
+  grad:
+    channels: 
+      - comp: [nx, nx]
+        weight: 1
+      - comp: [ny, ny]
+        weight: 1
+      - comp: [nz, nz]
+        weight: 1
+
+    weight: 1
