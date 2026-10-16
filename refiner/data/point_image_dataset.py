@@ -20,7 +20,6 @@ from torch.utils.data import Dataset
 
 try:
     from potree_plugin_C import potree_load
-    potree_load = None
 except:
     potree_load = None
 
@@ -126,7 +125,6 @@ class PointImageDataset(Dataset):
         img_min_size: int = -1,
         img_center_crop: Tuple[int] = (0, 0),
         absolute_normals: bool = False,
-        cam_precomp: bool = False,
         pert_init: Dict[str, float] = {},
         seed: int = -1,
         device: str = "cpu",
@@ -146,7 +144,6 @@ class PointImageDataset(Dataset):
         self.img_center_crop = img_center_crop
         self.absolute_normals = absolute_normals
 
-        self.cam_precomp = cam_precomp
         self.pc_view_filter = pc_view_filter[0] > 0
         if self.pc_view_filter:
             self.filter_delta_fov = pc_view_filter[0] * (torch.pi / 180)
@@ -601,30 +598,6 @@ class PointImageDataset(Dataset):
         img[outc] = intensity
         return img
 
-    def _read_cams_precomp(
-        self, ind: int
-    ) -> Tuple[torch.Tensor, Optional[torch.Tensor]]:
-        fn = str(Path(self.frames[ind].img_fn).stem)
-        pose_init_path = self.precomp_path / "cams_processed" / f"{fn}.yaml"
-        with open(pose_init_path, "r") as f:
-            pose_init = yaml.safe_load(f)["extr"]
-            pose_init = np.array(pose_init)
-            pose_init = torch.tensor(
-                pose_init, device=self._process_device, dtype=self.dtype
-            )
-
-        pose_target = None
-        pose_target_path = self.precomp_path / "cams_target" / f"{fn}.yaml"
-        if os.path.exists(pose_target_path):
-            with open(pose_target_path, "r") as f:
-                pose_target = yaml.safe_load(f)["extr"]
-                pose_target = np.array(pose_target)
-                pose_target = torch.tensor(
-                    pose_target, device=self._process_device, dtype=self.dtype
-                )
-
-        return pose_init, pose_target
-
     # Dataset iterator
     def __len__(self):
         return len(self.imgs)
@@ -660,9 +633,6 @@ class PointImageDataset(Dataset):
             # Initialization
             pose_init = frame.pose
             pose_target = None
-            if self.cam_precomp:
-                pose_init, pose_target = self._read_cams_precomp(img_ind)
-                logger.info("Using precomputed camera, ignoring pert init fields")
             intr_init, size, dist = frame.intr, frame.size, frame.dist
 
             if self.pc_view_filter:
@@ -730,7 +700,7 @@ class PointImageDataset(Dataset):
         # Compute poses and dynamic scale
         for meta in metas:
             # Poses
-            if self.pert_init and not self.cam_precomp:
+            if self.pert_init:
                 meta.pose_target = meta.pose_init
                 meta.intr_target = meta.intr_init
                 with torch.no_grad():

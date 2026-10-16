@@ -62,6 +62,9 @@ class Common(PointImageDataset):
     def _read_eval(self, frame: Frame) -> torch.Tensor:
         eval_path = self.path / self.set / frame.scene / "eval" / f"{frame.img_fn.split('.')[0]}.json"
 
+        if not os.path.exists(eval_path):
+            logger.info(f"No evaluation points found at {eval_path}!")
+            return None
         with open(eval_path, "r") as f:
             file = json.load(f)
 

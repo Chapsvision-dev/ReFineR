@@ -1,24 +1,137 @@
 
-include: 
-  - camera
-  - data
-  - data_pert_15
-  # - data_subs_04
-  - gs
-  # - point_size_02
-  - logger
-  # - loss_normals
-  # - loss_reflectivity
-  # - loss_gray
-  # - loss_ma
-  # - loss_photo
-  # - loss_gomhog
-  - loss_gom
-  # - loss_hog
-  - optim_dynamic
-  # - optim_fixed
-  - saver_file
-  - saver_rerun
-  # - saver_rerun_zdown # For Carla
+camera:
+  extr_grad: True
+  intr_grad: False
+  dist_grad: False
+  clip_plane: ${get_clip_plane:${data.pc_view_filter}}
+  ndc_ranges: [-1, 1, 1, -1, 0, 1]
+  viewport: [0, -1, -1, 0, 0, 1]
+  intr_model: FXFY
 
+data:
+  set: ${set}
+  scene: ${scene}
 
+  pc_channels: ${filter_synth:${unique:${add_xyz:${extract_0:${loss}}}}}
+  pc_subsample_factor: 1
+  pc_dynamic_scale: True # Tweak
+  pc_view_filter: [20, 0.1, 100] # Tweak
+  pc_normalize_intensity: True
+  pc_lod_filter: -1
+
+  img_channels: ${unique:${extract_1:${loss}}}
+  img_min_size: 1024
+  img_center_crop: [0, 0]
+  equalize_intensity: False # Tweak
+  absolute_normals: True # Tweak
+
+  seed: 92 # Tweak
+
+  pert_init: # Tweak
+    p: 10
+    r: 0
+    t: 0
+    f: 0
+    c: 0
+
+matchAnything_init: False
+matchAnything_init_gs: True
+
+gs:
+  point_size: 0.5
+  opacity: 0.5
+  mip_size: 5
+
+renderer: 
+  render_type: GS
+  render_channels: ${unique:${extract_0:${loss}}}
+
+logger:
+  log_freq: 1
+  log_to_file: True
+  log_to_console: True
+
+loss: # Tweak
+  grad:
+    channels: 
+      - comp: [r, g]
+        weight: 1
+      # - comp: [g, g]
+      #   weight: 1
+      # - comp: [nx, g]
+      #   weight: 1
+      # - comp: [ny, g]
+      #   weight: 1
+      # - comp: [nz, g]
+      #   weight: 1
+
+    weight: 1
+
+  # hogs:
+  #   channels: 
+  #     - comp: [g, g]
+  #       weight: 1
+  #   weight: 1
+  #   layers:
+  #     - nbins: 12
+  #       cell_size: 32
+  #       cells_per_block: 4
+
+  #     - nbins: 12
+  #       cell_size: 16
+  #       cells_per_block: 4
+
+  #     - nbins: 12
+  #       cell_size: 8
+  #       cells_per_block: 4
+
+  #     - nbins: 12
+  #       cell_size: 4
+  #       cells_per_block: 4
+
+  # ma:
+  #   channels: 
+  #     - comp: [g, g]
+  #       weight: 1
+  #   weight: 1
+      
+  # photo:
+  #   channels:     
+  #     - comp: [g, g]
+  #       weight: 1      
+  #   weight: 1
+
+optim: 
+  niter: [2e-5, 50, 500]
+  lr: 0.0002
+  
+saver_file: 
+  path: ${out_path}
+  pc_channel: ${viz_chan:${renderer.render_channels}}
+  modules: 
+  # Available modules: imgs, cams, pc, fused, graphs, csvs, fused_iter
+    - imgs
+    # - cams
+    - fused
+    # - graphs
+    # - csvs
+    - fused_iter
+    - imgs_init
+    - video
+
+saver_rerun: 
+  path: ${out_path}
+  pc_channel: ${viz_chan:${renderer.render_channels}}
+  spawn: True
+  modules: 
+    - imgs
+    - cams
+    - pc
+    - fused
+    - fused_iter
+    - match_pairs
+    - imgs_init
+    - dist_mask
+  # view_coordinates: 'RIGHT_HAND_Z_DOWN'
+  
+  

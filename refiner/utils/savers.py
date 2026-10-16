@@ -209,7 +209,7 @@ class FileSaver(Saver):
 
     @staticmethod
     def get_iter_path(name: str, idx: int) -> str:
-        return f"imgs/{name}/{idx}"
+        return f"imgs/{name}/{f'{idx}'.zfill(4)}"
 
     def save_cfg(self, cfg: Dict):
         save_yaml(OmegaConf.to_container(cfg, resolve=True), self.path / "cfg.yaml")
@@ -268,10 +268,11 @@ class FileSaver(Saver):
             print(os.getcwd())
             for c in self.channels + (["fused"] if os.path.exists(self.path / "imgs" / "fused") else []):
                 channel_path = self.path / "imgs" / c
-                cmd = ["ffmpeg", "-framerate", str(25), "-i", str(channel_path / "%000d.png"), "-c:v libx264", "-profile:v", "high", "-crf", str(20), "-pix_fmt", "yuv420p", str(channel_path / "output.mp4"), "-y"]
+                cmd = ["ffmpeg", "-framerate", str(25), "-i", str(channel_path / "%04d.png"), "-c:v libx264", "-profile:v", "high", "-crf", str(20), "-pix_fmt", "yuv420p", str(channel_path / "output.mp4"), "-y"]
                 os.system(" ".join(cmd))
                 files = glob.glob("[0-9]*.png", root_dir = channel_path)
-                for f in files:
+                files.sort()
+                for f in files[1:-1]:
                     os.remove(channel_path / f)
 
         # Save metrics graphs and txt files

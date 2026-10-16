@@ -1,9 +1,0 @@
-saver_file: 
-  path: ${out_path}
-  pc_channel: ${viz_chan:${renderer.render_channels}}
-  modules: 
-    - fused
-
-
-
-  

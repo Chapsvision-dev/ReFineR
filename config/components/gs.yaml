@@ -1,7 +1,0 @@
-gs:
-  point_size: 0.5
-  opacity: 0.2
-  mip_size: 2
-renderer: 
-  render_type: GS
-  render_channels: ${unique:${extract_0:${loss}}}

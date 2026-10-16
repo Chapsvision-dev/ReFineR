@@ -1,7 +1,7 @@
 from pathlib import Path
 from enum import IntEnum
 from typing import Optional, List, Tuple
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from omegaconf import MISSING
 
 from refiner.camera.backends import IntrinsicsBackend
@@ -103,7 +103,6 @@ class DataCfg:
     absolute_normals: bool = True
 
     pert_init: Optional[PertCfg] = None
-    cam_precomp: bool = False
     seed: int = -1
 
 
@@ -154,4 +153,4 @@ class FullCfg(RefineCfg):
 
 @dataclass
 class MainCfg:
-    include: List[str]
+    include: List[str] = field(default_factory=lambda: [])

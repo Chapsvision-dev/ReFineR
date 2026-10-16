@@ -15,7 +15,6 @@ data:
   pc_subsample_factor: 1
   pc_dynamic_scale: True # Tweak
   pc_view_filter: [20, 1, 100] # Tweak
-  pc_log_intensity: False
   pc_normalize_intensity: True
   pc_lod_filter: -1
 
@@ -25,7 +24,6 @@ data:
   equalize_intensity: False # Tweak
   absolute_normals: True # Tweak
 
-  cam_precomp: False
   seed: 92 # Tweak
 
   pert_init: # Tweak

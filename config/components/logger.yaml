@@ -1,4 +1,0 @@
-logger:
-  log_freq: 5
-  log_to_file: True
-  log_to_console: True

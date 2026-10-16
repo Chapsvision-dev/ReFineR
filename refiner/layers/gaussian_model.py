@@ -64,7 +64,7 @@ class GaussianModel:
         with torch.no_grad():
             mip = camera.extrinsics.world_to_camera(self.get_xyz)[:, [-1]] / camera.intrinsics.fx    
         if self.mip_size > 0:
-            self._scaling = torch.minimum(self._scaling, mip / self.rescale_factor * self.mip_size)
+            self._scaling = torch.minimum(self._scaling, mip * self.mip_size)
 
     @property
     def get_pc(self) -> torch.Tensor:

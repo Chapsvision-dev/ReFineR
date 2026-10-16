@@ -1,9 +1,0 @@
-camera:
-  extr_grad: True
-  intr_grad: False
-  dist_grad: False
-  clip_plane: ${get_clip_plane:${data.pc_view_filter}}
-  ndc_ranges: [-1, 1, 1, -1, 0, 1]
-  viewport: [0, -1, -1, 0, 0, 1]
-  intr_model: FXFY
-
