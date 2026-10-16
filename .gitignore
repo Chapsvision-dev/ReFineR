@@ -1,7 +1,6 @@
 output
 debug.ply
 debug.dot
-assets
 weights
 !docker/*
 !cpp/potree_plugin/src/libs

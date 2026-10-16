@@ -27,7 +27,7 @@ if __name__ == "__main__":
         "--data_path",
         type=str,
         help="Path to the data folder. Set REFINER_DATA_DIR for automatic default value",
-        default="",
+        default=os.getenv("REFINER_DATA_DIR"),
     )
     parser.add_argument("--set", type=str, help="Set from the dataset", required=True)
     parser.add_argument(
@@ -69,8 +69,6 @@ if __name__ == "__main__":
     )
 
     # Dataset init
-    if cfg.path == "":
-        cfg.path = os.getenv("REFINER_DATA_DIR")
     dataset = Common(**cfg, device="cpu")
 
     for i in range(len(dataset)):

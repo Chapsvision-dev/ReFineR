@@ -1,8 +1,8 @@
 
 camera:
   extr_grad: True
-  intr_grad: False
-  dist_grad: False
+  intr_grad: False # WIP
+  dist_grad: False # WIP
   clip_plane: ${get_clip_plane:${data.pc_view_filter}}
   ndc_ranges: [-1, 1, 1, -1, 0, 1]
   viewport: [0, -1, -1, 0, 0, 1]
@@ -13,34 +13,34 @@ data:
   scene: ${scene}
 
   pc_channels: ${filter_synth:${unique:${add_xyz:${extract_0:${loss}}}}}
-  pc_subsample_factor: 1
-  pc_dynamic_scale: True # Tweak
-  pc_view_filter: [20, 0.1, 100] # Tweak
+  pc_subsample_factor: 1 # Random subsampling of the input point cloud
+  pc_dynamic_scale: True # Use our custom scale estimator
+  pc_view_filter: [20, 0.1, 100] # Frustrum cullling [+fov (deg), near (m), far (m)]
   pc_normalize_intensity: True
-  pc_lod_filter: -1
+  pc_lod_filter: -1 # WIP
 
   img_channels: ${unique:${extract_1:${loss}}}
-  img_min_size: 1024
-  img_center_crop: [0, 0]
-  equalize_intensity: False # Tweak
-  absolute_normals: True # Tweak
+  img_min_size: 1024 # Minimum width or height
+  img_center_crop: [0, 0] # [width, height]
+  equalize_intensity: False # Apply histogram equalization on the intensity
+  absolute_normals: True # Remove normals' directions
 
-  seed: 92 # Tweak
+  seed: 92 # Random seed
 
-  pert_init: # Tweak
-    p: 10
-    r: 0
-    t: 0
-    f: 0
-    c: 0
+  pert_init: # Random perturbation (for evaluation)
+    p: 10 # Pixel error (use p or r + t)
+    r: 0 # rotation (rad)
+    t: 0 # translation (m)
+    f: 0 # focal (WIP)
+    c: 0 # center point (WIP)
 
-matchAnything_init: False
-matchAnything_init_gs: True
+matchAnything_init: False # Use matchAnything for initialization
+matchAnything_init_gs: True # Use a Gaussian Splatting render as input to matchAnything (otherwise we simply raster the point cloud)
 
-gs:
-  point_size: 0.5
+gs: # Gaussian splatting parameters
+  point_size: 0.5 
   opacity: 0.5
-  mip_size: 5
+  mip_size: 5 # Gaussian size filter based on its projected size in pixel (px)
 
 renderer: 
   render_type: GS
@@ -52,22 +52,22 @@ logger:
   log_to_console: True
 
 loss: # Tweak
-  grad:
-    channels: 
-      - comp: [r, g]
-        weight: 1
+  grad: # GOM loss
+    channels:
+      # - comp: [r, g]
+      #   weight: 1
       # - comp: [g, g]
       #   weight: 1
-      # - comp: [nx, g]
-      #   weight: 1
-      # - comp: [ny, g]
-      #   weight: 1
-      # - comp: [nz, g]
-      #   weight: 1
+      - comp: [nx, g] # left: point cloud channel, right: image channel
+        weight: 1
+      - comp: [ny, g]
+        weight: 1
+      - comp: [nz, g]
+        weight: 1
 
     weight: 1
 
-  # hogs:
+  # hogs: # Custom differentiable HOG implementation
   #   channels: 
   #     - comp: [g, g]
   #       weight: 1
@@ -89,35 +89,35 @@ loss: # Tweak
   #       cell_size: 4
   #       cells_per_block: 4
 
-  # ma:
+  # ma: # MatchAnything features 
   #   channels: 
   #     - comp: [g, g]
   #       weight: 1
   #   weight: 1
       
-  # photo:
+  # photo: # Photometric loss
   #   channels:     
   #     - comp: [g, g]
   #       weight: 1      
   #   weight: 1
 
 optim: 
-  niter: [2e-5, 50, 500]
-  lr: 0.0002
+  niter: [2e-5, 50, 500] # [min gradient step, min iter, max iter]
+  lr: 0.0002 # Adam learning rate
   
 saver_file: 
   path: ${out_path}
   pc_channel: ${viz_chan:${renderer.render_channels}}
   modules: 
   # Available modules: imgs, cams, pc, fused, graphs, csvs, fused_iter
-    - imgs
-    # - cams
-    - fused
-    # - graphs
-    # - csvs
-    - fused_iter
-    - imgs_init
-    - video
+    - imgs # Iteration rendered images
+    # - cams # Iteration camers
+    - fused # Fused depth maps
+    # - graphs # loss function graps
+    # - csvs # loss function csv
+    - fused_iter # Iteration fused depth maps
+    - imgs_init # Initial images
+    - video # Convert renders to videos
 
 saver_rerun: 
   path: ${out_path}
@@ -131,7 +131,7 @@ saver_rerun:
     - fused_iter
     - match_pairs
     - imgs_init
-    - dist_mask
+    - dist_mask # Distortion mask (WIP)
   # view_coordinates: 'RIGHT_HAND_Z_DOWN'
   
   
