@@ -226,7 +226,7 @@ def refine(
 
             if i % cfg.logger.log_freq == 0:
                 with torch.no_grad():
-                    m = [steps, losses, {"distortion": camera.distortion.params}]
+                    m = [steps, losses, {"distortion": camera.distortion.params[0]}]
                     if not infer:
                         m.append(get_errors(camera, target_camera, eval_pc))
                     for saver in savers:

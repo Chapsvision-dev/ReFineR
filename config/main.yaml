@@ -47,7 +47,7 @@ renderer:
   render_channels: ${unique:${extract_0:${loss}}}
 
 logger:
-  log_freq: 1
+  log_freq: 10
   log_to_file: True
   log_to_console: True
 

@@ -10,7 +10,7 @@ lzf
 pycparser 
 omegaconf 
 kornia 
-git+https://github.com/PoseLib/PoseLib.git@1758bd6
+poselib
 pycolmap
 git+https://github.com/cvg/pyceres.git@ae2d85d396903b62c6080f1898993675717b8b3c
 
@@ -27,7 +27,6 @@ slangtorch==1.3.4
 yacs
 joblib
 loguru
-pytorch_lightning
 einops
 h5py 
 

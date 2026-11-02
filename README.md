@@ -23,18 +23,23 @@
 </p>
 
 # Hardware and software requirements
-- **CUDA**>=12.8 : Tested on an NVIDIA RTX4070 with driver 580.178.04 / CUDA 13.0 and on an NVIDIA RTX5090 with 570.211.01 / CUDA 12.8
+- **CUDA**>=12.8 : Tested on an NVIDIA RTX4070 with driver 580.178.04 / CUDA 13.0 and on an NVIDIA RTX5090 with 615.71 / CUDA 13.4
 - **8Gb VRAM**
 - **Ubuntu**
 - **Anaconda**
 - **Python**>= 3.10
 
 # Installation
+
+### 0. Install requirements
+```
+apt-get install libgoogle-glog-dev libceres-dev ffmpeg
+```
 ### 1. create environment
 ``` bash
 conda create --name refiner python=3.10
 conda activate refiner
-pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+pip install torch torchvision --index-url https://download.pytorch.org/whl/<cu128 / cu134>
 pip install -r requirements.txt
 pip install -e . --no-build-isolation
 ```
