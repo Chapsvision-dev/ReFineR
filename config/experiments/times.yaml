@@ -1,0 +1,6 @@
+optim: 
+  niter: [2e-5, 100, 100]
+  lr: 0.0002
+
+matchAnything_init: False
+  

@@ -245,7 +245,7 @@ def refine(
         fi += i
     # Final errors
     t = time.time() - t
-    m = [steps, losses, {"time": torch.tensor(t), "iter": torch.tensor(i)}, {k: torch.tensor(times[k]) for k in times}]
+    m = [steps, losses, {"time": torch.tensor(t), "iter": torch.tensor(i), "points": torch.tensor(len(gaussians.get_xyz))}, {k: torch.tensor(times[k]) for k in times}]
     if not infer:
         errs = get_errors(best_cam, target_camera, eval_pc)
         m.append(errs)

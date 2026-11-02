@@ -9,7 +9,7 @@ import shutil
 
 import numpy as np
 
-from refiner.utils.metrics import threshs_errors
+from src.utils.metrics import threshs_errors
 
 
 def write_dict(dict: Dict[str, float], file: Path):
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         help="Pixel error thresholds",
         required=False,
         nargs="+",
-        default=[2, 3, 5, 10],
+        default=[1, 2, 3, 5, 6, 10, 15, 20, 50, 100],
     )
 
     # Parse arguments
@@ -70,6 +70,7 @@ if __name__ == "__main__":
                 img_dir = scene_dir / img
                 reps_dir = os.listdir(img_dir)
                 reps_dir = [img_dir / r for r in reps_dir if re.match("rep_[0-9]+", r)]
+
                 if len(reps_dir) == 0:
                     reps_dir.append(img_dir)
                 for rep_dir in reps_dir:
@@ -83,18 +84,21 @@ if __name__ == "__main__":
                         for line in reader:
                             metrics[line[0]].append(float(line[1]))
                     
-                    fused_path = img_dir / "final.png"
+                    fused_path = rep_dir / "final.png"
                     if os.path.exists(fused_path):
                         os.makedirs(fused_dir, exist_ok=True)
                         shutil.copyfile(fused_path, fused_dir / f"{scene}_{img}.png")
         # Save metrics and thresholds
         np.savetxt(result_dir / "fails.txt", [fails], fmt = "%d")
-
         metrics["rot_err_deg"] = [m / np.pi * 180 for m in metrics["rot_err"]]
         metrics["transl_err_cm"] = [m * 100 for m in metrics["transl_err"]]
-        means = {k: np.mean(metrics[k]) for k in metrics}
-        meds = {k: np.median(metrics[k]) for k in metrics}
-        stds = {k: np.std(metrics[k]) for k in metrics}
+        metrics["time_iter"] = [t / i for (t, i) in zip(metrics["time"], metrics["iter"])]
+        metrics["time_iter_gaussians"] = [t / i for (t, i) in zip(metrics["time_iter"], metrics["points"])]
+        metrics["points_M"] = [m / 1e6 for m in metrics["points"]]
+
+        means = {k: np.mean(metrics[k]) if len(metrics[k]) > 0 else -1 for k in metrics}
+        meds = {k: np.median(metrics[k]) if len(metrics[k]) > 0 else -1 for k in metrics}
+        stds = {k: np.std(metrics[k]) if len(metrics[k]) > 0 else -1 for k in metrics}
 
         write_dict(means, result_dir / "means.txt")
         write_dict(meds, result_dir / "meds.txt")
@@ -109,7 +113,7 @@ if __name__ == "__main__":
 
         # Save details
         for m in metrics:
-            with open(details_dir / m, "w", newline="") as csvfile:
+            with open(details_dir / f"{m}.txt", "w", newline="") as csvfile:
                 writer = csv.writer(
                     csvfile, delimiter=" ", quotechar="|", quoting=csv.QUOTE_MINIMAL
                 )
