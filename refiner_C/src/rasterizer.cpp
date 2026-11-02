@@ -12,7 +12,7 @@ namespace refiner_C {
         const torch::Tensor& chans,
         const torch::Tensor& extr,
         const torch::Tensor& intr,
-        int64_t W, int64_t H,
+        int64_t W, int64_t H, double near, double far,
         const double dist = 0.
     ){  
         TORCH_INTERNAL_ASSERT(xyz.device().type() == at::DeviceType::CPU);
@@ -60,7 +60,8 @@ namespace refiner_C {
         }
 
         // Frustrum filter
-        torch::Tensor mask = points.index({2}) > 1;
+        torch::Tensor mask = points.index({2}) > near;
+        mask = mask * (points.index({2}) < far);
         mask = mask * (points.index({0}) < W);
         mask = mask * (points.index({0}) > 0);
         mask = mask * (points.index({1}) < H);

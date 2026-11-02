@@ -36,7 +36,7 @@ namespace refiner_C {
 
     m.def("target_detect(Tensor A, int radius, int radiusin, int min_color_std, float max_offset, float max_line_cov, float min_angle, float cross_thresh, float thresh) -> (Tensor, Tensor, Tensor, Tensor, Tensor)");
 
-    m.def("rasterize(Tensor pc, Tensor chans, Tensor extr, Tensor intr, int W, int H, float dist) -> (Tensor, Tensor, Tensor)");
+    m.def("rasterize(Tensor pc, Tensor chans, Tensor extr, Tensor intr, int W, int H, float near, float far, float dist) -> (Tensor, Tensor, Tensor)");
 
   }
 

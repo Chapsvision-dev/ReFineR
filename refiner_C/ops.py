@@ -72,7 +72,3 @@ def sample_conv_backward(ctx, grad_output: torch.Tensor) -> Tuple[torch.Tensor, 
 
 torch.library.register_autograd(
     "refiner_C::sample_conv", sample_conv_backward, setup_context=sample_conv_setup_context)
-
-# Target detection
-def target_detect(A: torch.Tensor, radius: int, radiusin: int, min_color_std: int, max_offset: int, max_line_cov: float, min_angle: float, cross_thresh: float, thresh: float) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
-    return torch.ops.refiner_C.target_detect.default(A, radius, radiusin, min_color_std, max_offset, max_line_cov, min_angle, cross_thresh, thresh)
