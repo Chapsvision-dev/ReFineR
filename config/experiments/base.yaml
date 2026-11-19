@@ -14,12 +14,12 @@ data:
   pc_channels: ${filter_synth:${unique:${add_xyz:${extract_0:${loss}}}}}
   pc_subsample_factor: 1
   pc_dynamic_scale: True # Tweak
-  pc_view_filter: [20, 1, 100] # Tweak
+  pc_view_filter: [20, 0.1, 100] # Tweak
   pc_normalize_intensity: True
   pc_lod_filter: -1
 
   img_channels: ${unique:${extract_1:${loss}}}
-  img_min_size: -1
+  img_min_size: 1024
   img_center_crop: [0, 0]
   equalize_intensity: False # Tweak
   absolute_normals: True # Tweak
@@ -32,6 +32,7 @@ data:
     c: 0
 
 matchAnything_init: True
+matchAnything_init_gs: True
 
 gs:
   point_size: 0.5

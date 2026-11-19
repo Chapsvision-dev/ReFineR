@@ -36,9 +36,8 @@ class RendererRaster(Renderer):
                     camera.intrinsics.intrinsics_matrix.to("cpu"), 
                     camera.intrinsics.W, 
                     camera.intrinsics.H,
-                    camera.intrinsics.near,
-                    camera.intrinsics.far,
-                    camera.distortion.params.detach().cpu().item())
+                    camera.intrinsics.near * camera.intrinsics.rescale_factor,
+                    camera.intrinsics.far * camera.intrinsics.rescale_factor, camera.distortion.params[0].detach().cpu().item())
 
         synth = torch.moveaxis(synth, -1, 0).to(device)
         depth = depth.unsqueeze(0).to(device)

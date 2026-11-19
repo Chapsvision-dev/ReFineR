@@ -103,23 +103,14 @@ python main.py \
   --set TanksAndTemples \
   --scene Church \
   --img_idx 1 \
-  --cfg data.pc_subsample_factor
+  --cfg data.pc_subsample_factor=0.2
 ```
 
 # Running the benchmark experiments
 You can use the defined configuration files in "config/experiments" to run the experiment setup on our data, for instance using 
 ```bash
-python main.py \
-  --set nuScenes \
-  --cfg_file config/experiments/reflectivity.yaml \
-  --out_dir output/experiments/intensity \
-  --repeat 5 
-```
-After each experiment on several sets you should run the compile_results.py script, which gathers all metrics from each registration, with 
-
-```bash
-python compile_results.py \
-  --out_dir output/experiments/intensity
+python scripts/experiments.py gray \
+  --sets ETH3D
 ```
 
 # MatchAnything
