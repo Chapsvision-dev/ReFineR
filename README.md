@@ -106,12 +106,7 @@ python main.py \
   --cfg data.pc_subsample_factor=0.2
 ```
 
-# Running the benchmark experiments
-You can use the defined configuration files in "config/experiments" to run the experiment setup on our data, for instance using 
-```bash
-python scripts/experiments.py gray \
-  --sets ETH3D
-```
+
 
 # MatchAnything
 You may find third_party/MatchAnything the code from the [MatchAnything](https://github.com/zju3dv/MatchAnything) project which is used to estimate a better initialization to ReFineR. For setting it up, please download the weights from [this page](https://huggingface.co/spaces/LittleFrog/MatchAnything/blob/main/imcui/third_party/MatchAnything/README.md) and export the MATCHANYTHING_WEIGHTS_DIR environment variable
@@ -123,6 +118,13 @@ from the config you can now change the corresponding fields to true:
 ```yaml
 matchAnything_init: True
 matchAnything_init_gs: True
+```
+
+# Running the benchmark experiments
+You can use the defined configuration files in "config/experiments" to run the experiment setup on our data. For some experiments you need to download the MatchAnything's weights first.
+```bash
+python scripts/experiments.py gray \
+  --sets ETH3D
 ```
 
 # Marigold
