@@ -9,7 +9,7 @@ import shutil
 
 import numpy as np
 
-from src.utils.metrics import threshs_errors
+from refiner.utils.metrics import threshs_errors
 
 
 def write_dict(dict: Dict[str, float], file: Path):

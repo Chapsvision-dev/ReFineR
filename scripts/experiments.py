@@ -35,9 +35,10 @@ if __name__ == "__main__":
     name = args.name
 
     exp_dir = Path("config") / "experiments"
-    if not os.path.exists(exp_dir / name):
-        exp_dir = exp_dir / "ablations"
-    if not os.path.exists(exp_dir):
+    exp_dir2 = exp_dir
+    if not os.path.exists(exp_dir / f"{name}.yaml"):
+        exp_dir2 = exp_dir2 / "ablations"
+    if not os.path.exists(exp_dir2 / f"{name}.yaml"):
         raise ValueError(f"Config file not found for experiment: {name}")
 
     out_dir =  Path("output") / "experiments"
@@ -54,14 +55,14 @@ if __name__ == "__main__":
 
     for set in test_sets:
         print(f"Starting ablation {name} for set {set}")
-        # subprocess.run(["python",
-        #     "main.py",
-        #     "--set", set,
-        #     "--cfg", f"data.pc_subsample_factor={0.4 if set == 'TanksAndTemples' else 1.}",
-        #     "--cfg_file", exp_dir / f"base.yaml", exp_dir / f'{name}.yaml',
-        #     "--out_dir", out_dir / name,
-        #     "--data_path", data_path,
-        #     "--repeat", str(repeats[set])])
+        subprocess.run(["python",
+            "main.py",
+            "--set", set,
+            "--cfg", f"data.pc_subsample_factor={0.4 if set == 'TanksAndTemples' else 1.}",
+            "--cfg_file", exp_dir / f"base.yaml", exp_dir2 / f'{name}.yaml',
+            "--out_dir", out_dir / name,
+            "--data_path", data_path,
+            "--repeat", str(repeats[set])])
         subprocess.run(["python",
             "scripts/compile_results.py", 
             "--out_dir", 
